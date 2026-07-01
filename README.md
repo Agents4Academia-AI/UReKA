@@ -27,7 +27,7 @@ course/<slug>/   — a learning course, three-stage pipeline:
    /tutor <slug>       → session-by-session teaching, flashcards, mastery tracking
 ```
 
-> **New here?** Check out the `demo2` branch (or its examples) for a populated example vault showing sources/notes ingested and collated into papers/concepts.
+> **New here?** See the `demo2` branch for example outputs — sources/notes ingested and collated into papers/concepts.
 
 ## Setup
 
