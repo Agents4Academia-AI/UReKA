@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# skip --need flag if present (kept for call-site compatibility)
+[ "${1:-}" = "--need" ] && shift 2
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
+exec "$ROOT/.venv/bin/python" "$@"

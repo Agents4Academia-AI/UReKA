@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "zotero": {
+      "command": "zotero-mcp",
+      "args": [
+        "serve"
+      ],
+      "env": {
+        "ZOTERO_LOCAL": "true"
+      }
+    },
+    "pdf-tools": {
+      "command": "sh",
+      "args": [".claude/src/pyrun", "--need", "pymupdf4llm", ".claude/src/ingestion/pdf_tools.py"]
+    },
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    }
+  }
+}

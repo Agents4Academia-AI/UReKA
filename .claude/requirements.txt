@@ -1,0 +1,18 @@
+python-frontmatter>=1.1   # YAML frontmatter parsing for the index + skills
+python-dotenv>=1.0
+pymupdf>=1.24             # PDF text + annotation extraction (ingestion skills)
+pymupdf4llm>=0.0.17      # structured Markdown extraction (mirror-copy source files)
+rank-bm25>=0.2.2          # BM25 lexical retrieval
+numpy>=1.24               # rank-bm25 dependency
+# Pin pydantic to avoid resolver backtracking between fastmcp and zotero-mcp-server
+pydantic>=2.9,<2.13
+fastmcp>=2.14.0,<3.0
+zotero-mcp-server>=0.5.0
+# Literature exploration (Stage 1 scoper) from the `prior` repo. Pinned to a
+# commit SHA for reproducibility; [claude-code] pulls the Agent SDK so runs use
+# your Claude Code login instead of an ANTHROPIC_API_KEY. Bump the SHA to upgrade.
+prior[claude-code] @ git+ssh://git@github.com/Agents4Academia-AI/prior.git@2cc3360ecac3d740dd49646114b8596248cbe4ae
+scikit-learn>=1.3     # required by prior (auto-installs at runtime if missing; declare here to pre-install)
+# Future / optional retrieval backends (not yet wired up):
+# pymilvus>=2.4        # Milvus Lite vector store
+# voyageai>=0.2        # embeddings (voyage-3)

@@ -1,0 +1,51 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sh .claude/src/pyrun:*)",
+      "Bash(sh .claude/src/pyrun *)",
+
+      "Write(course/**)",
+      "Write(sources/**)",
+      "Write(notes/**)",
+      "Write(papers/**)",
+      "Write(concepts/**)",
+      "Write(explore_library/**)",
+      "Bash(date:*)",
+      "Bash(cp:*)",
+      "Bash(cp*)",
+      "Bash(mkdir:*)",
+      "Bash(mkdir*)"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "zotero",
+    "pdf-tools",
+    "notion"
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh .claude/src/pyrun .claude/src/reindex_poller.py --start >/dev/null 2>&1 || true"
+          },
+          {
+            "type": "command",
+            "command": "rm -f course/*/.session_reminded course/*/.edit_count 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh .claude/src/pyrun .claude/src/reindex_poller.py --stop >/dev/null 2>&1 || true"
+          }
+        ]
+      }
+    ]
+  }
+}

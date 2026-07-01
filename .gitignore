@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment / secrets — NEVER commit these
+.env
+.env.*
+# ...but the committed, secret-free template is allowed:
+!.env.example
+secrets/
+*.key
+*.pem
+
+# Personal Claude Code overrides (team defaults live in .claude/settings.json)
+.claude/settings.local.json
+
+# Per-person progress logs (if you choose to use the per-person pattern)
+.claude/progress-*.md
+
+# IDE
+.vscode/
+.idea/
+
+# Obsidian vault config (local app state)
+.obsidian/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Retrieval search index (generated artifact)
+.index/
+
+
+# Tutor /edit-cadence runtime flags (per-session state, not knowledge-base content)
+course/*/.session_reminded
+course/*/.edit_count
+
+# Pulled literature corpora (PRIOR_DATA_DIR — see .env / explore_lit.py)
+km_data/
+*.csv
+*.parquet
+*.pkl
+
+# Notebooks
+.ipynb_checkpoints/
+
+main.py
+.python-version
+# Editor swap files
+*.swp
+*.swo
+
+# Assumes the user have a local venv.
+uv.lock
+pyproject.toml
+.python-version
+
+# Scratch / cache artifacts (not knowledge-base content)
+.cache/
+scratch_wiki.json
+
+# autoexplore work artifacts (corpus JSONL, logs) — full-text renders go to sources/ instead
+explore_library/.work/
+course/*/library/.work/
