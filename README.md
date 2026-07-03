@@ -27,6 +27,8 @@ course/<slug>/   — a learning course, three-stage pipeline:
    /tutor <slug>       → session-by-session teaching, flashcards, mastery tracking
 ```
 
+> **New here?** See the `demo` branch for example outputs — sources/notes ingested and collated into papers/concepts.
+
 ## Setup
 
 ### Python (retrieval index — no API key needed)

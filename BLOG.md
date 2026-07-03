@@ -36,51 +36,74 @@ The common thread: existing tools address storage, or summarisation, or recall i
 
 ## UReKA: What We Built
 
-**UReKA** is yo**u**r personal **re**search **k**nowledge management **a**gent that lives inside
-[Claude Code](https://claude.ai/code). It ingests annotated research sources, synthesises them into structured knowledge pages, and lets you query, co-edit, and build on them — all from your editor, with no new UI to learn.
+**UReKA** is yo**U**r personal **Re**search **K**nowledge management **A**gent that lives inside [Claude Code](https://claude.ai/code). It ingests annotated research sources, synthesises them into structured knowledge pages, and lets you query, co-edit, and build on them — all from your editor, with no new UI to learn.
 
 The architecture has five layers.
 
 ```mermaid
+%%{init: {'flowchart': {'rankSpacing': 35, 'nodeSpacing': 20}}}%%
 flowchart LR
-    subgraph src["  SOURCES  "]
-        Z["🔴 Zotero\nannotated PDFs"]
-        N["⬛ Notion"]
-        O["🟣 Obsidian"]
-    end
+    src["<i>PERSONAL SOURCES</i>\n—————————————\nZotero \n Notion \n Obsidian"]
+    ing["`1 · INGEST
 
-    subgraph ing["  INGEST  "]
-        I["/zotero\n/notion\n/obsidian"]
-    end
+———————————————
 
-    subgraph col["  COLLATE  "]
-        C["/collate\ncreate · update"]
-    end
+**/zotero**
+**/notion**
+**/obsidian**`"]
+    syn["`2 · SYNTHESISE
 
-    subgraph kb["  KNOWLEDGE BASE  "]
-        P["📄 papers/\nattention.md\ninstructgpt.md"]
-        CN["💡 concepts/\ntransformers.md\nrlhf.md"]
-    end
+——————————
 
-    subgraph lrn["  LEARN  "]
-        E["/edit"]
-        A["/ask"]
-        G["/goal\n/tutor"]
-    end
+**/collate
+ /edit**`"]
+    kb["<i>KNOWLEDGE BASE</i>\n————————————\npapers/ \n or \nconcepts/"]
+    qry["`3 · QUERY
 
-    Z & N & O --> I --> C --> P & CN
-    P & CN --> E
-    P & CN --> A
-    P & CN --> G
+———————
 
-    style src fill:#f8f8f8,stroke:#ccc
+**/ask**`"]
+
+    subA[" "]
+    subB[" "]
+
+    res["<i>RESOURCES</i>\n————————————————\n/web\n/arxiv\nprior (Agents4Academia)"]
+    exp["`5 · AUTOEXPLORE
+
+——————————————
+
+**/autoexplore**
+builds explore_library/`"]
+    course["`4 · COURSE
+
+————————————————
+
+**/goal** set target, audit KB
+**/tutor** teach, track mastery`"]
+
+    src --> ing --> syn --> kb --> qry
+    res ~~~ subA ~~~ exp ~~~ subB ~~~ course
+    res --> exp
+    exp -- builds curriculum --> course
+    kb --> course
+
+    linkStyle 9 font-size:15px
+
+    style src fill:#f0f0f0,stroke:#999
     style ing fill:#ddeeff,stroke:#aac
-    style col fill:#d4f0e8,stroke:#8cc
-    style kb fill:#f0f0f0,stroke:#bbb
-    style lrn fill:#fff8e6,stroke:#cc9
+    style syn fill:#d4f0e8,stroke:#8cc
+    style kb fill:#ffe0d6,stroke:#cc5533,stroke-width:5px
+    style qry fill:#e8f3ff,stroke:#7fa8cc
+    style course fill:#ffedcc,stroke:#cc8800,stroke-width:2px
+    style res fill:#f8f8f8,stroke:#ccc
+    style exp fill:#ede8f5,stroke:#9b8ec4,stroke-width:2px
+    style subA fill:transparent,stroke:transparent
+    style subB fill:transparent,stroke:transparent
 ```
 
 *Sources flow in → ingested & personalised → synthesised into a connected knowledge base → queryable and learnable.*
+
+
 
 ### 🔵 Layer 1: Ingest
 
@@ -102,21 +125,21 @@ Paper pages weave together the objective summary with your personal annotations 
 
 <code style="background:#d4f0e8;border:1px solid #66aa88;padding:1px 6px;border-radius:4px">/edit &lt;page&gt;</code> lets you co-edit any page in place: you can leave `@claude: expand this` comments inline, give chat instructions, or build on your own edits — always grounded in the page's cited sources.
 
-### 🟡 Layer 3: Query
+### 🔷 Layer 3: Query
 
-<code style="background:#fff8e6;border:1px solid #ccaa44;padding:1px 6px;border-radius:4px">/ask &lt;question&gt;</code> retrieves the relevant notes from across the base, synthesises a cited answer, and explicitly flags gaps — things the question touches that aren't in the knowledge base yet. The underlying retrieval (BM25 + wikilink expansion, pure Python, no LLM) can also be called directly via <code style="background:#fff8e6;border:1px solid #ccaa44;padding:1px 6px;border-radius:4px">/retrieve &lt;topic&gt;</code> to list relevant notes without synthesising — useful when you just want to see what you have.
+<code style="background:#e8f3ff;border:1px solid #7fa8cc;padding:1px 6px;border-radius:4px">/ask &lt;question&gt;</code> retrieves the relevant notes from across the base, synthesises a cited answer, and explicitly flags gaps — things the question touches that aren't in the knowledge base yet. The underlying retrieval (BM25 + wikilink expansion, pure Python, no LLM) can also be called directly via <code style="background:#e8f3ff;border:1px solid #7fa8cc;padding:1px 6px;border-radius:4px">/retrieve &lt;topic&gt;</code> to list relevant notes without synthesising — useful when you just want to see what you have.
 
 The index auto-rebuilds in the background after edits settle, so it's always current without blocking your work.
 
-### 🟡 Layer 4: Learning Courses
+### 🟠 Layer 4: Learning Courses
 
 A three-stage pipeline for structured self-study.
 
-<code style="background:#fff8e6;border:1px solid #ccaa44;padding:1px 6px;border-radius:4px">/goal &lt;topic&gt;</code> (optionally with a deadline and weekly hours, e.g. `/goal "diffusion models" 1 month 5 h/week`) defines your learning target and scope, audits your existing knowledge base against it (classifying what's covered, what's missing, what needs revisiting), and writes a `course/<slug>/goal.md`. Then it automatically hands off to `/curriculum`.
+<code style="background:#ffedcc;border:1px solid #cc8800;padding:1px 6px;border-radius:4px">/goal &lt;topic&gt;</code> (optionally with a deadline and weekly hours, e.g. `/goal "diffusion models" 1 month 5 h/week`) defines your learning target and scope, audits your existing knowledge base against it (classifying what's covered, what's missing, what needs revisiting), and writes a `course/<slug>/goal.md`. Then it automatically hands off to `/curriculum`.
 
-<code style="background:#fff8e6;border:1px solid #ccaa44;padding:1px 6px;border-radius:4px">/curriculum &lt;slug&gt;</code> builds a full course on that goal. It runs `/autoexplore` (see Layer 5 below) to construct a concept web of vetted resources (papers read full-text, Wikipedia articles, blog posts, tutorials) decomposed into interlinked `papers/` and `concepts/` pages in a per-course library. It sequences these into modules (foundational → core → advanced), builds a weekly schedule against your hours-per-week budget, and compiles a cited reading doc per module. Each resource records its canonical URL so the tutor can hand you an actual link.
+<code style="background:#ffedcc;border:1px solid #cc8800;padding:1px 6px;border-radius:4px">/curriculum &lt;slug&gt;</code> builds a full course on that goal. It runs `/autoexplore` (see Layer 5 below) to construct a concept web of vetted resources (papers read full-text, Wikipedia articles, blog posts, tutorials) decomposed into interlinked `papers/` and `concepts/` pages in a per-course library. It sequences these into modules (foundational → core → advanced), builds a weekly schedule against your hours-per-week budget, and compiles a cited reading doc per module. Each resource records its canonical URL so the tutor can hand you an actual link.
 
-<code style="background:#fff8e6;border:1px solid #ccaa44;padding:1px 6px;border-radius:4px">/tutor &lt;slug&gt;</code> teaches you one scheduled hour-block at a time. For each session it:
+<code style="background:#ffedcc;border:1px solid #cc8800;padding:1px 6px;border-radius:4px">/tutor &lt;slug&gt;</code> teaches you one scheduled hour-block at a time. For each session it:
 1. Hands you a **reading list** — actual links to go read in Zotero/Notion/Obsidian, each with a one-line TLDR of why and what you'll learn
 2. **Teaches** the session's module content
 3. **Suggests ingesting** what you just read into your personal base (with dedup checking)
@@ -128,6 +151,8 @@ A three-stage pipeline for structured self-study.
 <code style="background:#ede8f5;border:1px solid #9b8ec4;padding:1px 6px;border-radius:4px">/autoexplore &lt;query&gt;</code> can also be run standalone, independently of any course. Given a topic, it searches the literature, reads papers full-text, pulls vetted web sources, and decomposes everything into an interlinked web of `papers/` and `concepts/` pages — finishing with a synthesis page that ties it all together. Results land in `explore_library/` (a separately indexed corpus, never mixed into your personal base) so you can browse and promote what's useful without cluttering your main knowledge base.
 
 Under the hood, `/curriculum` calls `/autoexplore` automatically when building a course — that's how the per-course `library/` gets populated. Running it standalone is useful when you want to map a new area quickly without committing to a full course.
+
+Literature search and full-text rendering are powered by `prior`, a pip-installable package built by another team at the Agents4Academia hackathon — we wrap it via `.claude/src/explore_lit.py` and `fulltext_lit.py` rather than reimplementing paper discovery from scratch.
 
 ---
 
