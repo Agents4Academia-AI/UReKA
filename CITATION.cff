@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "UReKA: a personal research knowledge base agent"
+message: "If you use UReKA, please cite it."
+type: software
+authors:
+  - given-names: Eleanor
+    family-names: Trollope
+repository-code: "https://github.com/Agents4Academia-AI/UReKA"
+url: "https://github.com/Agents4Academia-AI/UReKA"
+abstract: "Personal research knowledge agent. Unifies Zotero, Notion, Obsidian, and arXiv into one linked, queryable knowledge base."
+keywords:
+  - knowledge management
+  - personal knowledge management
+  - research agents
+  - zotero
+  - obsidian
